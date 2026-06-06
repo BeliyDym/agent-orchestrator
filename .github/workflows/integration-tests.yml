@@ -1,3 +1,14 @@
+# APPROVED PROVIDER-TEST EXCEPTION (OST-706, follow-up to OST-647).
+# This workflow intentionally installs native provider CLIs (Claude Code,
+# Codex, Aider, OpenCode) and passes native provider secrets
+# (ANTHROPIC_API_KEY, OPENAI_API_KEY) because the subject under test IS the
+# native agent adapters (agent-claude-code / agent-codex / agent-aider /
+# agent-opencode). It is NOT a PR-review workflow, so it is OUTSIDE the
+# OST-647 reusable AI-review policy (which standardizes PR review on the
+# centralized OpenRouter lane: BeliyDym/.github/.github/workflows/ai-review.yml@v2).
+# Do NOT migrate these to OpenRouter — that would stop testing the native
+# CLIs this project exists to orchestrate. Secrets are consumed via the
+# encrypted GitHub Actions secret store and are never printed or persisted.
 name: Integration Tests
 
 on:
@@ -53,6 +64,9 @@ jobs:
       # --- Run integration tests ---
       - name: Run integration tests
         env:
+          # Native provider keys for the agent-adapter integration tests —
+          # approved exception, NOT the OST-647 PR-review (OpenRouter) lane.
+          # See the header comment at the top of this file.
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
